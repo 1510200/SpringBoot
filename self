@@ -726,3 +726,172 @@ For someone like you, Atul, who’s hands-on with **Spring Boot, Hibernate, and 
 
 ---
 
+Question_______________________________________
+why we are not use @Autowired in Spring Boot ?
+We avoid @Autowired in Spring Boot because constructor injection is preferred, and Spring automatically injects dependencies when a class has a single constructor. This leads to cleaner, testable, and more maintainable code.
+
+
+
+🔹 What is JSON in Spring Boot?
+
+JSON (JavaScript Object Notation) is used to:
+
+Send data from client → server
+
+Return data from server → client
+
+Spring Boot uses Jackson internally to convert Java objects ↔ JSON automatically.
+
+{
+  "id": 1,
+  "name": "Atul",
+  "email": "atul@gmail.com"
+}
+NOTE---------------------------------------
+Angular sends JSON data using HTTP to REST APIs. Spring Boot converts JSON into Java objects, processes business logic, interacts with the database, and returns JSON back to Angular for UI rendering.
+
+ANGULAR  <<<<<---->>>>>JSON  <<<--->>> API <<<--->>>BACKEND
+
+
+You are right 👍
+There are **two main types of web services**:
+
+1️⃣ **SOAP Web Services**
+2️⃣ **RESTful Web Services**
+
+
+
+
+### 🔹 What is SOAP?
+
+**SOAP (Simple Object Access Protocol)** is a **protocol** used for exchanging structured information between applications.
+
+---
+
+### 🔹 Key Characteristics
+
+* Uses **XML only**
+* Very **strict standards**
+* Uses **WSDL** (Web Service Description Language)
+* Supports **WS-Security**
+* Works over **HTTP, SMTP, TCP**
+
+---
+
+### 🔹 SOAP Example (XML Request)
+
+```xml
+<soap:Envelope>
+   <soap:Body>
+      <getUser>
+         <id>1</id>
+      </getUser>
+   </soap:Body>
+</soap:Envelope>
+```
+
+---
+
+### 🔹 Advantages
+
+✔ High security
+✔ Reliable transactions
+✔ Enterprise-level support
+
+### 🔹 Disadvantages
+
+❌ Heavy & complex
+❌ Slower performance
+❌ XML only
+
+---
+
+### 🔹 Used In
+
+* Banking systems
+* Financial transactions
+* Payment gateways
+
+---
+
+## 🌐 2️⃣ RESTful Web Services
+
+![Image](https://media.licdn.com/dms/image/v2/C4D12AQHh6l0xkbhTPg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1622931040032?e=2147483647\&t=KP6s82dMHXyOTcVsNCkKypBjIlQSWYCqI4ucfTrzTJg\&v=beta)
+
+![Image](https://www.devopsschool.com/blog/wp-content/uploads/2018/09/http-method-put-post.jpg)
+
+![Image](https://howtodoinjava.com/wp-content/uploads/2015/02/Spring-REST-JSON-Example-672x372.png)
+
+### 🔹 What is REST?
+
+**REST (Representational State Transfer)** is an **architectural style**, not a protocol.
+
+---
+
+### 🔹 Key Characteristics
+
+* Uses **HTTP methods**
+* Supports **JSON, XML**
+* Stateless
+* Lightweight & fast
+* Easy to implement
+
+---
+
+### 🔹 REST Example (JSON Response)
+
+```json
+{
+  "id": 1,
+  "name": "Atul",
+  "email": "atul@gmail.com"
+}
+```
+
+---
+
+### 🔹 Advantages
+
+✔ Fast & scalable
+✔ Easy to develop
+✔ Widely used
+✔ Perfect for web & mobile apps
+
+### 🔹 Disadvantages
+
+❌ No built-in security like SOAP
+❌ Needs extra security (JWT, OAuth)
+
+---
+
+### 🔹 Used In
+
+* Web applications
+* Mobile apps
+* Microservices
+* Cloud applications
+
+---
+
+## 📊 SOAP vs REST Comparison
+
+| Feature     | SOAP        | REST                |
+| ----------- | ----------- | ------------------- |
+| Type        | Protocol    | Architectural Style |
+| Data Format | XML only    | JSON, XML           |
+| Speed       | Slow        | Fast                |
+| Security    | WS-Security | HTTPS, JWT          |
+| Complexity  | High        | Low                 |
+| Scalability | Low         | High                |
+| Usage       | Banking     | Web, Mobile         |
+
+---
+
+## 🎯 Interview One-Line Answer
+
+> **There are two types of web services: SOAP, which is protocol-based and secure but heavy, and RESTful services, which are lightweight, stateless, and widely used for modern web and mobile applications.**
+
+---
+
+
+

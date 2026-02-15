@@ -816,11 +816,7 @@ There are **two main types of web services**:
 
 ## 🌐 2️⃣ RESTful Web Services
 
-![Image](https://media.licdn.com/dms/image/v2/C4D12AQHh6l0xkbhTPg/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1622931040032?e=2147483647\&t=KP6s82dMHXyOTcVsNCkKypBjIlQSWYCqI4ucfTrzTJg\&v=beta)
 
-![Image](https://www.devopsschool.com/blog/wp-content/uploads/2018/09/http-method-put-post.jpg)
-
-![Image](https://howtodoinjava.com/wp-content/uploads/2015/02/Spring-REST-JSON-Example-672x372.png)
 
 ### 🔹 What is REST?
 
@@ -892,6 +888,434 @@ There are **two main types of web services**:
 > **There are two types of web services: SOAP, which is protocol-based and secure but heavy, and RESTful services, which are lightweight, stateless, and widely used for modern web and mobile applications.**
 
 ---
+API  EXAMPLE
+
+
+Exception handling *********************************************
+
+
+
+
+
+---
+
+# ✅ 1. `@Controller` (For Web Pages – MVC)
+
+👉 Used when you are building **web applications with HTML pages (JSP/Thymeleaf)**.
+
+### 📌 Purpose:
+
+* Returns **View names (HTML pages)**
+* Works with **Model + View**
+
+### Example:
+
+```java
+@Controller
+public class HomeController {
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("name", "Atul");
+        return "home"; // home.html / home.jsp
+    }
+}
+```
+
+### 🔹 Output:
+
+➡️ Loads: `home.html`
+
+---
+
+### ⚠️ Important:
+
+If you return data directly from `@Controller`, you must use `@ResponseBody`.
+
+```java
+@GetMapping("/data")
+@ResponseBody
+public String data() {
+    return "Hello";
+}
+```
+
+---
+
+# ✅ 2. `@RestController` (For REST APIs – JSON/XML)
+
+👉 Used when you are building **REST APIs (Backend for Mobile/Web/Frontend)**.
+
+### 📌 Purpose:
+
+* Returns **JSON / XML**
+* No View (No HTML)
+* Automatically adds `@ResponseBody`
+
+### Internally:
+
+```java
+@RestController = @Controller + @ResponseBody
+```
+
+---
+
+### Example:
+
+```java
+@RestController
+@RequestMapping("/api")
+public class EmployeeController {
+
+    @GetMapping("/emp/{id}")
+    public Employee getEmp(@PathVariable Long id) {
+        return employeeService.getEmployee(id);
+    }
+}
+```
+
+### 🔹 Output (JSON):
+
+```json
+{
+  "id": 1,
+  "name": "Atul",
+  "salary": 50000
+}
+```
+
+---
+
+### 📌 Use When:
+
+✔️ Spring Boot + React / Angular / Mobile App
+✔️ Microservices
+✔️ REST API
+
+👉 Most modern projects use `@RestController`.
+
+---
+
+# ✅ 3. `@ControllerAdvice` (Global Exception Handling)
+
+👉 Used for **handling errors/exceptions globally**.
+
+Instead of writing `try-catch` in every controller, we use this.
+
+---
+
+### 📌 Purpose:
+
+* Centralized exception handling
+* Handles errors for **all controllers**
+
+---
+
+### Example:
+
+#### Step 1: Custom Exception
+
+```java
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String msg) {
+        super(msg);
+    }
+}
+```
+
+---
+
+#### Step 2: Global Handler
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleAll(Exception ex) {
+        return new ResponseEntity<>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+```
+
+---
+
+### 🔹 Output (If Error Occurs):
+
+```json
+{
+  "error": "Not found: 5"
+}
+```
+
+---
+
+# 📊 Comparison Table
+
+| Feature              | @Controller       | @RestController   | @ControllerAdvice |
+| -------------------- | ----------------- | ----------------- | ----------------- |
+| Used For             | Web Pages         | REST APIs         | Error Handling    |
+| Returns              | View Name         | JSON/XML          | Error Response    |
+| HTML Support         | ✅ Yes             | ❌ No              | ❌ No              |
+| @ResponseBody Needed | Yes               | No                | No                |
+| Scope                | Single Controller | Single Controller | All Controllers   |
+
+---
+
+# ✅ Which One Should You Use?
+
+### ✔️ If you are making Website (HTML):
+
+👉 Use `@Controller`
+
+### ✔️ If you are making API / Backend:
+
+👉 Use `@RestController` ✅ (Most Common)
+
+### ✔️ For Error Handling:
+
+👉 Always use `@ControllerAdvice` ✅
+
+---
+
+# 🏆 Real Project Example
+
+In real Spring Boot project:
+
+```
+controller/
+   ├── EmployeeController (@RestController)
+   ├── AuthController (@RestController)
+
+exception/
+   └── GlobalExceptionHandler (@ControllerAdvice)
+```
+
+✅ What is WebRequest?
+
+WebRequest represents the current web request (headers, parameters, session, etc.).
+
+It is mainly used in:
+
+✔️ Exception Handling (@ControllerAdvice)
+✔️ Interceptors / Filters
+✔️ Controllers (rarely)
+
+*********************************************************************************************************************
+the `false` in `request.getDescription(false)` is about **whether you want the full URI or just the context path** when building the description of the request.  
+
+### Breaking it down
+- `request` here is a `WebRequest` (often from `ServletWebRequest` in Spring).  
+- `getDescription(boolean includeClientInfo)` is the method being called.  
+- The parameter `includeClientInfo` controls whether client-specific details (like session ID or user info) are included in the description.
+
+### Behavior
+- `request.getDescription(true)` → returns something like:  
+  ```
+  uri=/findlocationbyid?id=2;client=127.0.0.1
+  ```
+  (includes client info such as IP/session ID).  
+
+- `request.getDescription(false)` → returns:  
+  ```
+  uri=/findlocationbyid?id=2
+  ```
+  (only the URI, no client info).  
+
+---
+
+### Why use `false` here?
+- In an **error DTO**, you usually just want the request path (the endpoint that failed), not sensitive client details.  
+- Passing `false` ensures you don’t accidentally expose session IDs or IP addresses in your error response JSON.  
+
+---
+
+👉 In short:  
+`false` = safer, cleaner error messages (just the URI).  
+`true` = more detailed, but potentially exposing client/session info.  
+
+in intelige we can use ctrl+B  for finding where the method is present
+
+CTRL + F12  it is used to find all the methods in project 
+
+
+
+*******************************************************************************************
+
+Good question Atul 👍 (very important for interviews & real projects)
+
+# ✅ What is Pagination?
+
+**Pagination** means dividing large data into smaller pages.
+
+Instead of loading 10,000 records at once ❌
+We load only 10–20 records per page ✅
+
+---
+
+### 📌 Example
+
+Suppose you have 1000 employees.
+
+Without pagination:
+
+```
+GET /employees
+```
+
+👉 Returns 1000 records (slow ❌)
+
+With pagination:
+
+```
+GET /employees?page=0&size=10
+```
+
+👉 Returns only 10 records ✅
+
+---
+
+## 📊 Real-Life Example
+
+Google search results
+Amazon product listing
+Instagram posts
+
+All use pagination.
+
+---
+
+# ✅ What is Sorting?
+
+**Sorting** means arranging data in order:
+
+* Ascending (A → Z, 1 → 10)
+* Descending (Z → A, 10 → 1)
+
+Example:
+
+```
+Sort by salary ascending
+Sort by name descending
+```
+
+---
+
+# ✅ Pagination + Sorting in Spring Boot (Most Important)
+
+Spring Data JPA gives this ready-made 🔥
+
+---
+
+## Step 1: Repository
+
+```java
+public interface EmployeeRepository 
+        extends JpaRepository<Employee, Long> {
+}
+```
+
+No extra code needed.
+
+---
+
+## Step 2: Service
+
+```java
+public Page<Employee> getEmployees(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return employeeRepository.findAll(pageable);
+}
+```
+
+---
+
+## Step 3: Controller
+
+```java
+@GetMapping("/employees")
+public Page<Employee> getAllEmployees(
+        @RequestParam int page,
+        @RequestParam int size) {
+
+    return employeeService.getEmployees(page, size);
+}
+```
+
+---
+
+
+# ✅ Add Sorting
+
+```java
+Pageable pageable = PageRequest.of(
+        page,
+        size,
+        Sort.by("salary").descending()
+);
+```
+
+---
+
+### API Example with Sorting
+
+
+---
+
+# ✅ What Does Page Return?
+
+When you return `Page<Employee>` you get:
+
+```json
+{
+  "content": [ ...employees... ],
+  "totalPages": 5,
+  "totalElements": 25,
+  "size": 5,
+  "number": 0
+}
+```
+
+---
+
+# 📊 Difference
+
+| Feature  | Pagination     | Sorting           |
+| -------- | -------------- | ----------------- |
+| Purpose  | Divide data    | Arrange data      |
+| Example  | Page 1, Page 2 | Salary High → Low |
+| Improves | Performance    | User experience   |
+
+---
+
+# ✅ Why It Is Important?
+
+✔️ Improves performance
+✔️ Reduces memory usage
+✔️ Faster APIs
+✔️ Mandatory in production apps
+
+---
+
+# 🎯 Interview Question Answer (Short Version)
+
+> Pagination is the process of dividing large datasets into smaller chunks (pages), and sorting arranges data in a specific order like ascending or descending.
+
+---
+
+If you want, next I can explain:
+
+👉 Custom query with pagination
+👉 Pagination in MySQL (LIMIT, OFFSET)
+👉 Pageable vs Slice
+👉 Best practice production-level example
+
+
 
 
 

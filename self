@@ -1315,6 +1315,14 @@ If you want, next I can explain:
 👉 Pageable vs Slice
 👉 Best practice production-level example
 
+What is difference between CRUD Repository and JPA Repository
+in CRUD Repository no pagination concept is their
+in JPA Repository pagination concept is their
+
+
+
+
+
 
 
 

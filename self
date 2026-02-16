@@ -1320,6 +1320,9 @@ in CRUD Repository no pagination concept is their
 in JPA Repository pagination concept is their
 
 
+NOTE ___________
+WHILE WE VALIDATE ANY ENTITY IF IT THROWN ERROR  FOR HANDLING IT WE CAN USE BINDINGrESULT
+
 
 
 
